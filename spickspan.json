@@ -1,0 +1,14 @@
+{
+    "cloud_provider": {
+        "url": "http://nomock.essentier.com",
+        "username": "cha_urwu@hotmail.com",
+        "password": "aaa"
+    },
+    "services": {
+        "hello-nomock": {
+            "project_src_root": ".",
+            "port": 8080
+        }
+    }
+}
+

@@ -1,0 +1,38 @@
+{
+	"ImportPath": "github.com/essentier/hello-example",
+	"GoVersion": "go1.4.2",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/bndr/gopencils",
+			"Rev": "e9c8039cf77402adfa4a6ae94bd7b3416f77c0a4"
+		},
+		{
+			"ImportPath": "github.com/dgrijalva/jwt-go",
+			"Comment": "v2.2.0-28-g2e53eb6",
+			"Rev": "2e53eb673c4450614e3bca6f345197f9527dce71"
+		},
+		{
+			"ImportPath": "github.com/essentier/authutil",
+			"Rev": "a09ee3640fadc0f6c7dc9151566b94670db95e40"
+		},
+		{
+			"ImportPath": "github.com/essentier/spickspan",
+			"Rev": "3ea33b747c8391ed0be214dd4b760056db143623"
+		},
+		{
+			"ImportPath": "github.com/go-errors/errors",
+			"Rev": "a41850380601eeb43f4350f7d17c6bbd8944aaf8"
+		},
+		{
+			"ImportPath": "github.com/gorilla/context",
+			"Rev": "215affda49addc4c8ef7e2534915df2c8c35c6cd"
+		},
+		{
+			"ImportPath": "github.com/gorilla/mux",
+			"Rev": "47e8f450ef38c857cdd922ec08862ca9d65a1c6d"
+		}
+	]
+}
