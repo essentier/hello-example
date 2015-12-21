@@ -1,6 +1,6 @@
 {
     "cloud_provider": {
-        "url": "http://nomock.essentier.com",
+        "url": "https://nomock.essentier.com",
         "username": "cha_urwu@hotmail.com",
         "password": "aaa"
     },
