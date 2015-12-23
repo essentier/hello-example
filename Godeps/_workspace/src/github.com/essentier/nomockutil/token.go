@@ -15,7 +15,6 @@ func GetSubjectInToken(tokenString string) (subject string, err error) {
 	}
 
 	jsonData, err := jwt.DecodeSegment(tokenParts[1])
-	//jsonData, err := base64.StdEncoding.DecodeString(tokenParts[1])
 	if err != nil {
 		return "", errors.Wrap(err, 1)
 	}
