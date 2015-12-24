@@ -1,4 +1,5 @@
 {
+    "version": "beta1",
     "cloud_provider": {
         "url": "https://nomock.essentier.com",
         "username": "cha_urwu@hotmail.com",
