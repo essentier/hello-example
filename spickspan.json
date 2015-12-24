@@ -7,6 +7,7 @@
     },
     "services": {
         "hello-nomock": {
+            "protocol": "http",
             "project_src_root": ".",
             "port": 8080
         }
