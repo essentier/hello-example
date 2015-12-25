@@ -10,25 +10,41 @@ import (
 var provider = spickspan.GetNomockProvider()
 
 func init() {
-	//model.LoginToEssentier("http://104.196.21.169:8083", "cha_urwu@hotmail.com", "aaa")
 	spickspan.BuildAll()
+}
+
+func TestHelloAPI(t *testing.T) {
+	t.Parallel()
+	helloService, err := testutil.CreateRestService("hello-example", provider)
+	defer helloService.Release()
+
+	var helloResult map[string]string
+	_, err = helloService.Res("hello", &helloResult).Get()
+	if err != nil {
+		t.Fatalf("Failed to call the hello rest api. Error is: %v.", err)
+	}
+	t.Logf("hellResult is %v", helloResult)
+	expectedMessage := "Hello, World!"
+	if helloResult["message"] != expectedMessage {
+		t.Errorf("hello message should be %v but is: %v", expectedMessage, helloResult["message"])
+	}
 }
 
 // func TestNonexistentAPI(t *testing.T) {
 // 	t.Parallel()
-// 	_, r := testutil.SendRestGetToService(t, "hello-nomock", provider, "hello")
-// 	if r.StatusCode != http.StatusNotFound {
-// 		t.Errorf("Calling a nonexistent API should return status code 404. The status code was %v", r.StatusCode)
+// 	helloService := getService("hello-nomock", t)
+// 	defer provider.Release(helloService)
+
+// 	hostUrl := helloService.GetHttpUrl()
+// 	api := gopencils.Api(hostUrl)
+// 	var result interface{}
+// 	res := api.Res("nonexistent", &result)
+// 	_, err := res.Get()
+// 	if err != nil {
+// 		t.Fatalf("Failed to call the API. Error is: %v.", err)
+// 	}
+
+// 	if res.Raw.StatusCode != http.StatusNotFound {
+// 		t.Errorf("Calling a nonexistent API should return status code 404. The status code was %v", res.Raw.StatusCode)
 // 	}
 // }
-
-func TestHelloAPI(t *testing.T) {
-	t.Parallel()
-	result, _ := testutil.SendRestGetToService(t, "hello-nomock", provider, "hello")
-	t.Logf("result %+v", result)
-	//expectedMessage := "Hello, World!"
-	//helloResponse := result.(map[string]interface{})
-	// if helloResponse["message"] != expectedMessage {
-	// 	t.Errorf("hello message should be %v but is: %v", expectedMessage, helloResponse["message"])
-	// }
-}
