@@ -41,6 +41,7 @@ func (p *serviceBuilder) buildServiceOnNomockBuilder(serviceName string) error {
 	builderResource := p.nomockApi.Res("nomockbuilder/build/" + serviceName)
 	builderResource.SetHeader("Authorization", "Bearer "+p.token)
 	_, err := builderResource.Get()
+	log.Printf("build error here: %v", err)
 	return err
 }
 

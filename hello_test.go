@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"testing"
 
 	"github.com/essentier/spickspan"
@@ -10,12 +11,15 @@ import (
 var provider = spickspan.GetNomockProvider()
 
 func init() {
-	spickspan.BuildAll()
+	err := spickspan.BuildAll()
+	if err != nil {
+		log.Printf("Failed to build projects. The error is %#v", err)
+	}
 }
 
 func TestHelloAPI(t *testing.T) {
 	t.Parallel()
-	helloService, err := testutil.CreateRestService("hello-example", provider)
+	helloService, err := testutil.CreateRestService("hello-nomock1", provider)
 	defer helloService.Release()
 
 	var helloResult map[string]string
