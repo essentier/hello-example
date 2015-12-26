@@ -20,7 +20,7 @@
 		},
 		{
 			"ImportPath": "github.com/essentier/spickspan",
-			"Rev": "319dfe81d5da64a6477a3d50d069333e26ec450d"
+			"Rev": "61df42c9d0298df3d4100c3f41bb3930281b691d"
 		},
 		{
 			"ImportPath": "github.com/go-errors/errors",

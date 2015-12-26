@@ -38,10 +38,10 @@ func (p *serviceBuilder) buildService() error {
 
 func (p *serviceBuilder) buildServiceOnNomockBuilder(serviceName string) error {
 	log.Printf("building service %v on nomock builder", serviceName)
-	builderResource := p.nomockApi.Res("nomockbuilder/build/" + serviceName)
+	var result interface{}
+	builderResource := p.nomockApi.Res("nomockbuilder/build/"+serviceName, &result)
 	builderResource.SetHeader("Authorization", "Bearer "+p.token)
 	_, err := builderResource.Get()
-	log.Printf("build error here: %v", err)
 	return err
 }
 

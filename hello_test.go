@@ -13,7 +13,7 @@ var provider = spickspan.GetNomockProvider()
 func init() {
 	err := spickspan.BuildAll()
 	if err != nil {
-		log.Printf("Failed to build projects. The error is %#v", err)
+		log.Printf("Failed to build projects. The error is %v", err)
 	}
 }
 
