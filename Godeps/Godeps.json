@@ -16,11 +16,11 @@
 		},
 		{
 			"ImportPath": "github.com/essentier/nomockutil",
-			"Rev": "3a6079d936c1cc2120f5ebbc26ff724848c9b937"
+			"Rev": "247cd2a72e73bb909fe32ba04bf7cb5151e088ba"
 		},
 		{
 			"ImportPath": "github.com/essentier/spickspan",
-			"Rev": "61df42c9d0298df3d4100c3f41bb3930281b691d"
+			"Rev": "a0365956fec194bd3014c963ed92eed5de823f57"
 		},
 		{
 			"ImportPath": "github.com/go-errors/errors",

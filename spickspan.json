@@ -6,7 +6,7 @@
         "password": "aaa"
     },
     "services": {
-        "hello-nomock1": {
+        "hello-example": {
             "protocol": "http",
             "project_src_root": ".",
             "port": 8080
