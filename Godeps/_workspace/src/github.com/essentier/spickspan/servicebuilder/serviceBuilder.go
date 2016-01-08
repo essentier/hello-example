@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/bndr/gopencils"
+	"github.com/essentier/gopencils"
 	"github.com/essentier/nomockutil"
 	"github.com/essentier/spickspan/config"
 	"github.com/go-errors/errors"
@@ -39,7 +39,7 @@ func (p *serviceBuilder) buildService() error {
 func (p *serviceBuilder) buildServiceOnNomockBuilder(serviceName string) error {
 	log.Printf("building service %v on nomock builder", serviceName)
 	var result interface{}
-	builderResource := p.nomockApi.Res("nomockbuilder/build/"+serviceName, &result)
+	builderResource := p.nomockApi.NewChildResource("nomockbuilder/build/"+serviceName, &result)
 	builderResource.SetHeader("Authorization", "Bearer "+p.token)
 	_, err := builderResource.Get()
 	return err

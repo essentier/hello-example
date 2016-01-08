@@ -6,13 +6,13 @@
 	],
 	"Deps": [
 		{
-			"ImportPath": "github.com/bndr/gopencils",
-			"Rev": "e9c8039cf77402adfa4a6ae94bd7b3416f77c0a4"
-		},
-		{
 			"ImportPath": "github.com/dgrijalva/jwt-go",
 			"Comment": "v2.2.0-28-g2e53eb6",
 			"Rev": "2e53eb673c4450614e3bca6f345197f9527dce71"
+		},
+		{
+			"ImportPath": "github.com/essentier/gopencils",
+			"Rev": "3fbee41dde3bf1bef56627fea955714c2f387fe2"
 		},
 		{
 			"ImportPath": "github.com/essentier/nomockutil",
@@ -20,7 +20,11 @@
 		},
 		{
 			"ImportPath": "github.com/essentier/spickspan",
-			"Rev": "81088af9112367262d32d8444a6cf69697794aa9"
+			"Rev": "994df84fc262e7771b061314d268367882a3b0c4"
+		},
+		{
+			"ImportPath": "github.com/essentier/testutil",
+			"Rev": "cab10b009198268ce087b82ad3e293f879627373"
 		},
 		{
 			"ImportPath": "github.com/go-errors/errors",

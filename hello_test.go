@@ -3,52 +3,20 @@ package main
 import (
 	"testing"
 
-	"github.com/essentier/spickspan"
-	"github.com/essentier/spickspan/testutil"
+	"github.com/essentier/testutil"
 )
-
-var provider = spickspan.GetNomockProvider()
-
-func init() {
-	err := spickspan.BuildAll()
-	if err != nil {
-		panic("Failed to build projects. The error is " + err.Error())
-	}
-}
 
 func TestHelloAPI(t *testing.T) {
 	t.Parallel()
-	helloService, err := testutil.CreateRestService("hello-example", provider)
+	helloService := testutil.CreateRestService("hello-example", t)
 	defer helloService.Release()
 
 	var helloResult map[string]string
-	_, err = helloService.Res("hello", &helloResult).Get()
-	if err != nil {
-		t.Fatalf("Failed to call the hello rest api. Error is: %v.", err)
-	}
+	helloService.Resource("hello").Get(&helloResult)
 
-	//t.Logf("hellResult is %v", helloResult)
-	expectedMessage := "Hello, World!"
+	t.Logf("hellResult is %v", helloResult)
+	expectedMessage := "Hello, World!!"
 	if helloResult["message"] != expectedMessage {
 		t.Errorf("hello message should be %v but is: %v", expectedMessage, helloResult["message"])
 	}
 }
-
-// func TestNonexistentAPI(t *testing.T) {
-// 	t.Parallel()
-// 	helloService := getService("hello-nomock", t)
-// 	defer provider.Release(helloService)
-
-// 	hostUrl := helloService.GetHttpUrl()
-// 	api := gopencils.Api(hostUrl)
-// 	var result interface{}
-// 	res := api.Res("nonexistent", &result)
-// 	_, err := res.Get()
-// 	if err != nil {
-// 		t.Fatalf("Failed to call the API. Error is: %v.", err)
-// 	}
-
-// 	if res.Raw.StatusCode != http.StatusNotFound {
-// 		t.Errorf("Calling a nonexistent API should return status code 404. The status code was %v", res.Raw.StatusCode)
-// 	}
-// }

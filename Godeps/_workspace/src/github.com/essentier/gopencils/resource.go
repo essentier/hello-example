@@ -18,14 +18,10 @@ package gopencils
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"io"
 	"net/http"
 	"net/url"
-	"strconv"
 )
-
-var ErrCantUseAsQuery = errors.New("can't use options[0] as Query")
 
 // Resource is basically an url relative to given API Baseurl.
 type Resource struct {
@@ -40,47 +36,23 @@ type Resource struct {
 }
 
 // Creates a new Resource.
-func (r *Resource) Res(options ...interface{}) *Resource {
-	if len(options) > 0 {
-		var url string
-		if len(r.Url) > 0 {
-			url = r.Url + "/" + options[0].(string)
-		} else {
-			url = options[0].(string)
-		}
-
-		newR := &Resource{Url: url, Api: r.Api, Headers: http.Header{}}
-
-		if len(options) > 1 {
-			newR.Response = options[1]
-		}
-
-		return newR
+func (r *Resource) NewChildResource(resourceName string, response interface{}) *Resource {
+	var url string
+	if len(r.Url) > 0 {
+		url = r.Url + "/" + resourceName
+	} else {
+		url = resourceName
 	}
-	return r
+
+	newR := &Resource{Url: url, Api: r.Api, Headers: http.Header{}, Response: response}
+	return newR
 }
 
 // Same as Res() Method, but returns a Resource with url resource/:id
-func (r *Resource) Id(options ...interface{}) *Resource {
-	if len(options) > 0 {
-		id := ""
-		switch v := options[0].(type) {
-		default:
-			id = v.(string)
-		case int:
-			id = strconv.Itoa(v)
-		case int64:
-			id = strconv.FormatInt(v, 10)
-		}
-		url := r.Url + "/" + id
-		newR := &Resource{id: id, Url: url, Api: r.Api, Headers: http.Header{}, Response: &r.Response}
-
-		if len(options) > 1 {
-			newR.Response = options[1]
-		}
-		return newR
-	}
-	return r
+func (r *Resource) NewChildIdResource(id string) *Resource {
+	url := r.Url + "/" + id
+	newR := &Resource{id: id, Url: url, Api: r.Api, Headers: http.Header{}, Response: &r.Response}
+	return newR
 }
 
 // Sets QueryValues for current Resource
@@ -93,82 +65,47 @@ func (r *Resource) SetQuery(querystring map[string]string) *Resource {
 }
 
 // Performs a GET request on given Resource
-// Accepts map[string]string as parameter, will be used as querystring.
-func (r *Resource) Get(options ...interface{}) (*Resource, error) {
-	if len(options) > 0 {
-		if qry, ok := options[0].(map[string]string); ok {
-			r.SetQuery(qry)
-		} else {
-			return nil, ErrCantUseAsQuery
-		}
-
-	}
+// Call SetQuery beforehand if you want to set the query string of the GET request.
+func (r *Resource) Get() (*Resource, error) {
 	return r.do("GET")
 }
 
 // Performs a HEAD request on given Resource
-// Accepts map[string]string as parameter, will be used as querystring.
-func (r *Resource) Head(options ...interface{}) (*Resource, error) {
-	if len(options) > 0 {
-		if qry, ok := options[0].(map[string]string); ok {
-			r.SetQuery(qry)
-		} else {
-			return nil, ErrCantUseAsQuery
-		}
-	}
+// Call SetQuery beforehand if you want to set the query string of the HEAD request.
+func (r *Resource) Head() (*Resource, error) {
 	return r.do("HEAD")
 }
 
 // Performs a PUT request on given Resource.
 // Accepts interface{} as parameter, will be used as payload.
-func (r *Resource) Put(options ...interface{}) (*Resource, error) {
-	if len(options) > 0 {
-		r.Payload = r.SetPayload(options[0])
-	}
+func (r *Resource) Put(payload interface{}) (*Resource, error) {
+	r.Payload = r.SetPayload(payload)
 	return r.do("PUT")
 }
 
 // Performs a POST request on given Resource.
 // Accepts interface{} as parameter, will be used as payload.
-func (r *Resource) Post(options ...interface{}) (*Resource, error) {
-	if len(options) > 0 {
-		r.Payload = r.SetPayload(options[0])
-	}
+func (r *Resource) Post(payload interface{}) (*Resource, error) {
+	r.Payload = r.SetPayload(payload)
 	return r.do("POST")
 }
 
 // Performs a Delete request on given Resource.
-// Accepts map[string]string as parameter, will be used as querystring.
-func (r *Resource) Delete(options ...interface{}) (*Resource, error) {
-	if len(options) > 0 {
-		if qry, ok := options[0].(map[string]string); ok {
-			r.SetQuery(qry)
-		} else {
-			return nil, ErrCantUseAsQuery
-		}
-	}
+// Call SetQuery beforehand if you want to set the query string of the DELETE request.
+func (r *Resource) Delete() (*Resource, error) {
 	return r.do("DELETE")
 }
 
-// Performs a Delete request on given Resource.
-// Accepts map[string]string as parameter, will be used as querystring.
-func (r *Resource) Options(options ...interface{}) (*Resource, error) {
-	if len(options) > 0 {
-		if qry, ok := options[0].(map[string]string); ok {
-			r.SetQuery(qry)
-		} else {
-			return nil, ErrCantUseAsQuery
-		}
-	}
+// Performs a OPTIONS request on given Resource.
+// Call SetQuery beforehand if you want to set the query string of the OPTIONS request.
+func (r *Resource) Options() (*Resource, error) {
 	return r.do("OPTIONS")
 }
 
 // Performs a PATCH request on given Resource.
 // Accepts interface{} as parameter, will be used as payload.
-func (r *Resource) Patch(options ...interface{}) (*Resource, error) {
-	if len(options) > 0 {
-		r.Payload = r.SetPayload(options[0])
-	}
+func (r *Resource) Patch(payload interface{}) (*Resource, error) {
+	r.Payload = r.SetPayload(payload)
 	return r.do("PATCH")
 }
 
@@ -214,9 +151,11 @@ func (r *Resource) do(method string) (*Resource, error) {
 
 	defer resp.Body.Close()
 
-	err = json.NewDecoder(resp.Body).Decode(r.Response)
-	if err != nil {
-		return r, err
+	if r.Response != nil {
+		err = json.NewDecoder(resp.Body).Decode(r.Response)
+		if err != nil {
+			return r, err
+		}
 	}
 
 	return r, nil
