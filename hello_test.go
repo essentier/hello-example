@@ -14,7 +14,7 @@ func TestHelloAPI(t *testing.T) {
 	var helloResult map[string]string
 	helloService.Resource("hello").Get(&helloResult)
 
-	t.Logf("hellResult is %v", helloResult)
+	t.Logf("helloResult is %v", helloResult)
 	expectedMessage := "Hello, World!!"
 	if helloResult["message"] != expectedMessage {
 		t.Errorf("hello message should be %v but is: %v", expectedMessage, helloResult["message"])
