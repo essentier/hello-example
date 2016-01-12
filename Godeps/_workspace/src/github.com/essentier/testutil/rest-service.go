@@ -7,6 +7,7 @@ import (
 	"github.com/essentier/spickspan"
 	"github.com/essentier/spickspan/config"
 	"github.com/essentier/spickspan/model"
+	"github.com/essentier/spickspan/probe"
 )
 
 var provider model.Provider
@@ -28,7 +29,7 @@ func init() {
 	}
 }
 
-func CreateRestService(serviceName string, t *testing.T) *RestService {
+func CreateRestService(serviceName string, readinessPath string, t *testing.T) *restService {
 	service, err := provider.GetService(serviceName)
 	if err != nil {
 		t.Fatalf("Failed to create service %v. Error is: %v.", serviceName, err)
@@ -36,20 +37,29 @@ func CreateRestService(serviceName string, t *testing.T) *RestService {
 
 	errHandler := &failTestRestErrHanlder{t: t}
 	api := gopencils.Api(service.GetUrl())
-	rw := &resWrapper{Resource: api, errHandler: errHandler}
-	return &RestService{provider: provider, service: service, api: rw}
+	rw := &resourceWrapper{resource: api, errHandler: errHandler}
+	restService := &restService{provider: provider, service: service, api: rw}
+
+	serviceReady := probe.ProbeHttpService(restService.service, readinessPath)
+	if serviceReady {
+		return restService
+	} else {
+		defer restService.Release()
+		t.Fatalf("Service is not ready. The service is %v", serviceName)
+		return nil
+	}
 }
 
-type RestService struct {
-	api      *resWrapper
+type restService struct {
+	api      *resourceWrapper
 	provider model.Provider
 	service  model.Service
 }
 
-func (s *RestService) Release() {
+func (s *restService) Release() {
 	s.provider.Release(s.service)
 }
 
-func (s *RestService) Resource(resourceName string) *resWrapper {
+func (s *restService) Resource(resourceName string) *resourceWrapper {
 	return s.api.NewChildResource(resourceName)
 }
