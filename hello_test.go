@@ -8,7 +8,7 @@ import (
 
 func TestHelloAPI(t *testing.T) {
 	t.Parallel()
-	helloService := testutil.CreateRestService("hello-example", "/hello" t)
+	helloService := testutil.CreateRestService("hello-example", "/hello", t)
 	defer helloService.Release()
 
 	var helloResult map[string]string
