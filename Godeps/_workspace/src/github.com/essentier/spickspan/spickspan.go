@@ -25,6 +25,34 @@ func GetHttpService(provider model.Provider, serviceName string, readinessPath s
 	}
 }
 
+func GetDefaultServiceProvider() (model.Provider, error) {
+	config, err := config.GetConfig()
+	if err != nil {
+		return nil, err
+	}
+
+	registry, err := GetDefaultKubeRegistry(config)
+	if err != nil {
+		return nil, err
+	}
+
+	return registry.ResolveProvider()
+}
+
+func GetMongoDBService(provider model.Provider, serviceName string) (model.Service, error) {
+	mgoService, err := provider.GetService(serviceName)
+	if err != nil {
+		return mgoService, err
+	}
+
+	serviceReady := probe.ProbeMgoService(mgoService)
+	if serviceReady {
+		return mgoService, nil
+	} else {
+		return mgoService, errors.Errorf("Service is not ready yet. The service is %v", mgoService)
+	}
+}
+
 func BuildAllInConfig(config config.Model) error {
 	return servicebuilder.BuildAllInConfig(config)
 }
