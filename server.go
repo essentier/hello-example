@@ -10,7 +10,7 @@ import (
 func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/hello", Hello)
-	log.Printf("hello-nomock listening on port 8080")
+	log.Printf("hello-example listening on port 8080")
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
 
