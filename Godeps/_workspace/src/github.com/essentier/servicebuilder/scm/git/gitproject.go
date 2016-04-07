@@ -47,7 +47,12 @@ func (g *gitProject) PushCode(repoUrl string) error {
 	g.addAll()
 	g.commit("'done by nomock'")
 	g.push(repoUrl, "nomock")
-	return g.cmdRunner.LastError()
+	lastError := g.cmdRunner.LastError()
+	if lastError.HasError() {
+		return lastError
+	} else {
+		return nil
+	}
 }
 
 func (g *gitProject) init() {
