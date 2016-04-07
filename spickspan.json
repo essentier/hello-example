@@ -3,7 +3,7 @@
     "cloud_provider": {
         "url": "https://nomock.essentier.com",
         "username": "cha_urwu@hotmail.com",
-        "password": "Cauchy@1789"
+        "password": "aaa"
     },
     "services": {
         "hello-example": {

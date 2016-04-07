@@ -16,7 +16,11 @@
 		},
 		{
 			"ImportPath": "github.com/essentier/nomockutil",
-			"Rev": "910c9aa9ee6ad3fa5bf96af7dd30cc9590d5028a"
+			"Rev": "b6f523058c032191a5a2279449760b083bd819f0"
+		},
+		{
+			"ImportPath": "github.com/essentier/servicebuilder",
+			"Rev": "1aa278cf60cb1e91db89c388f8b2e8c6a8fda0db"
 		},
 		{
 			"ImportPath": "github.com/essentier/spickspan",
@@ -24,7 +28,7 @@
 		},
 		{
 			"ImportPath": "github.com/essentier/testutil",
-			"Rev": "d2d1aee9f6e323fb6cdd49626945ddca10ff808f"
+			"Rev": "8dba6b0b4185ead7147f2dad8e107c235148ef5e"
 		},
 		{
 			"ImportPath": "github.com/go-errors/errors",
@@ -37,6 +41,11 @@
 		{
 			"ImportPath": "github.com/gorilla/mux",
 			"Rev": "47e8f450ef38c857cdd922ec08862ca9d65a1c6d"
+		},
+		{
+			"ImportPath": "gopkg.in/mgo.v2",
+			"Comment": "r2015.06.03-3-g3569c88",
+			"Rev": "3569c88678d88179dcbd68d02ab081cbca3cd4d0"
 		}
 	]
 }

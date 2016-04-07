@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/essentier/gopencils"
+	"github.com/essentier/servicebuilder"
 	"github.com/essentier/spickspan"
 	"github.com/essentier/spickspan/config"
 	"github.com/essentier/spickspan/model"
@@ -23,7 +24,7 @@ func init() {
 		panic("Failed to get nomock provider. The error is " + err.Error())
 	}
 
-	err = spickspan.BuildAllInConfig(config)
+	err = servicebuilder.BuildAllInConfig(config)
 	if err != nil {
 		panic("Failed to build projects. The error is " + err.Error())
 	}
