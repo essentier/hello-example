@@ -28,17 +28,17 @@ func (g *gitProject) PushCode(repoUrl string) error {
 	stashCount := 0
 	originalBranch := g.getCurrentBranch()
 	stashCount = g.stashAll(stashCount)
-	if g.cmdRunner.HasError() {
+	if !g.cmdRunner.HasError() {
 		defer g.deferredPopStashed(stashCount)
 	}
 
 	g.branch("nomock")
-	if g.cmdRunner.HasError() {
+	if !g.cmdRunner.HasError() {
 		defer g.deferredDeleteBranch("nomock")
 	}
 
 	g.checkout("nomock")
-	if g.cmdRunner.HasError() {
+	if !g.cmdRunner.HasError() {
 		defer g.deferredCheckout(originalBranch)
 	}
 
