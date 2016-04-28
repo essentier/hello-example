@@ -73,9 +73,9 @@ func getEssentierGitRemote(serviceName string, builderUrl string, token string) 
 		remoteUrl = builderUrl + ":" + serviceName
 	} else if strings.HasPrefix(builderUrl, "https://") {
 		if strings.HasSuffix(builderUrl, "/") {
-			remoteUrl = "https://" + token + ":@" + builderUrl[8:] + serviceName
+			remoteUrl = "https://" + token + ":@" + builderUrl[8:] + "gitpush/" + serviceName
 		} else {
-			remoteUrl = "https://" + token + ":@" + builderUrl[8:] + "/" + serviceName
+			remoteUrl = "https://" + token + ":@" + builderUrl[8:] + "/gitpush/" + serviceName
 		}
 	}
 	return remoteUrl
